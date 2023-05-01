@@ -3,9 +3,12 @@ import speech_recognition as sr
 import pyttsx3
 import time
 import sounddevice
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 
-openai.api_key = "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"
+openai.api_key = os.getenv("API_KEY", None)
 engine = pyttsx3.init()
 
 
