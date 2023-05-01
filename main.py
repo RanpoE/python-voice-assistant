@@ -4,7 +4,7 @@ import openai
 import sys
 import threading
 import tkinter as tk
-import sounddevice
+import sounddevice  # avoids ASLA warning message.
 import os
 from dotenv import load_dotenv
 
@@ -20,7 +20,7 @@ class Assistant:
         self.speaker.setProperty("rate", 150)
 
         self.root = tk.Tk()
-        self.label = tk.Label(text="A", font=("Arial", 120, "bold"))
+        self.label = tk.Label(text="E", font=("Arial", 120, "bold"))
         self.label.pack()
 
         threading.Thread(target=self.run_assistant).start()
@@ -42,11 +42,15 @@ class Assistant:
         return response["choices"][0]["text"]
 
     def handle_end(self):
-        self.speaker.say("Bye.")
-        self.speaker.runAndWait()
-        self.speaker.stop()
+        self.text_to_voice("Exiting the matrix")
         self.root.destroy()
         sys.exit()
+
+    def text_to_voice(self, text):
+        self.label.config(fg="blue")
+        self.speaker.say(text)
+        self.speaker.runAndWait()
+        self.speaker.stop()
 
     def run_assistant(self):
         while True:
@@ -66,9 +70,7 @@ class Assistant:
                         else:
                             if text is not None:
                                 response = self.generate_reponse(text)
-                                self.speaker.say(response)
-                                self.speaker.runAndWait()
-                                self.speaker.stop()
+                                self.text_to_voice(response)
                             self.label.config(fg="black")
                     if "terminate" in text:
                         self.handle_end()

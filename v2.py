@@ -1,8 +1,7 @@
 import openai
 import speech_recognition as sr
 import pyttsx3
-import time
-import sounddevice
+import sounddevice # avoids ASLA warning message.
 import os
 from dotenv import load_dotenv
 
